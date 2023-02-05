@@ -1,10 +1,16 @@
 #include "EncoderHandler.h"
+#include "ColourSensorHandler.h"
 
 // Pin Definitions
 #define ENCODER_LEFT_A 5
 #define ENCODER_LEFT_B 6
 #define ENCODER_RIGHT_A 7
 #define ENCODER_RIGHT_B 8
+
+#define COLOUR_SENSOR_S2 9
+#define COLOUR_SENSOR_S3 10
+#define COLOUR_SENSOR_OUT 11
+
 
 // Miscellanious Constants
 #define WHEEL_RADIUS 50
@@ -13,6 +19,9 @@
 // Classes to keep track of encoder data
 EncoderHandler *left_encoder;
 EncoderHandler *right_encoder;
+
+// Colour Sensor Handling Class
+ColourSensorHandler *colour_sensor;
 
 // Pin states so PCI can figure which pin changed
 volatile int D2_state = LOW;
@@ -40,6 +49,14 @@ void setup() {
   // Initialize encoder handlers
   left_encoder = new EncoderHandler(D2_state, D3_state, WHEEL_RADIUS, COUNT_PER_REV);
   right_encoder = new EncoderHandler(D4_state, D5_state, WHEEL_RADIUS, COUNT_PER_REV);
+
+  // Setup Colour Sensor Pins
+  pinMode(COLOUR_SENSOR_S2, OUTPUT);
+  pinMode(COLOUR_SENSOR_S3, OUTPUT);
+  pinMode(COLOUR_SENSOR_OUT, INPUT);
+
+  // Initialize colour sensor handler
+  colour_sensor = new ColourSensorHandler(COLOUR_SENSOR_S2, COLOUR_SENSOR_S3, COLOUR_SENSOR_OUT);
 
 }
 
