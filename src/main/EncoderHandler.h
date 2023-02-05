@@ -7,7 +7,7 @@ class EncoderHandler
   volatile int a_state;
   volatile int b_state;
 
-  int radius;
+  double radius;
   int count_per_revolution;
 
 public:
@@ -23,6 +23,7 @@ public:
   void toggle_b();
 
   double distance();
+  int getCount();
 };
 
 #endif

@@ -11,8 +11,8 @@
 #define COUNT_PER_REV 14
 
 // Classes to keep track of encoder data
-EncoderHandler left_encoder;
-EncoderHandler right_encoder;
+EncoderHandler *left_encoder;
+EncoderHandler *right_encoder;
 
 // Pin states so PCI can figure which pin changed
 volatile int D2_state = LOW;
@@ -37,6 +37,10 @@ void setup() {
   D4_state = digitalRead(ENCODER_RIGHT_A);
   D5_state = digitalRead(ENCODER_RIGHT_B);
 
+  // Initialize encoder handlers
+  left_encoder = new EncoderHandler(D2_state, D3_state, WHEEL_RADIUS, COUNT_PER_REV);
+  right_encoder = new EncoderHandler(D4_state, D5_state, WHEEL_RADIUS, COUNT_PER_REV);
+
 }
 
 ISR(PCINT2_vect)
@@ -45,26 +49,26 @@ ISR(PCINT2_vect)
   if(digitalRead(ENCODER_LEFT_A) != D2_state)
   {
     D2_state = D2_state == LOW ? HIGH : LOW;
-    left_encoder.toggle_a();
-    return
+    left_encoder->toggle_a();
+    return;
   }
   if(digitalRead(ENCODER_LEFT_B) != D3_state)
   {
     D3_state = D3_state == LOW ? HIGH : LOW;
-    left_encoder.toggle_b();
-    return
+    left_encoder->toggle_b();
+    return;
   }
   if(digitalRead(ENCODER_RIGHT_A) != D4_state)
   {
     D4_state = D4_state == LOW ? HIGH : LOW;
-    right_encoder.toggle_a();
-    return
+    right_encoder->toggle_a();
+    return;
   }
   if(digitalRead(ENCODER_RIGHT_B) != D5_state)
   {
     D5_state = D5_state == LOW ? HIGH : LOW;
-    right_encoder.toggle_b();
-    return
+    right_encoder->toggle_b();
+    return;
   }
 }
 
