@@ -1,5 +1,6 @@
 #include "EncoderHandler.h"
 #include "ColourSensorHandler.h"
+#include "UltrasonicSensorHandler.h"
 
 // Pin Definitions
 #define ENCODER_LEFT_A 5
@@ -11,19 +12,20 @@
 #define COLOUR_SENSOR_S3 10
 #define COLOUR_SENSOR_OUT 11
 
+#define ULTRASONIC_SENSOR_TRIGGER 12
+#define ULTRASONIC_SENSOR_ECHO 13
 
 // Miscellanious Constants
 #define WHEEL_RADIUS 50
 #define COUNT_PER_REV 14
 
-// Classes to keep track of encoder data
+// Classes to keep track of sensor data
 EncoderHandler *left_encoder;
 EncoderHandler *right_encoder;
-
-// Colour Sensor Handling Class
 ColourSensorHandler *colour_sensor;
+UltrasonicSensorHandler *ultrasonic_sensor;
 
-// Pin states so PCI can figure which pin changed
+// Encoder pin states so PCI can figure which pin changed
 volatile int D2_state = LOW;
 volatile int D3_state = LOW;
 volatile int D4_state = LOW;
@@ -50,13 +52,20 @@ void setup() {
   left_encoder = new EncoderHandler(D2_state, D3_state, WHEEL_RADIUS, COUNT_PER_REV);
   right_encoder = new EncoderHandler(D4_state, D5_state, WHEEL_RADIUS, COUNT_PER_REV);
 
-  // Setup Colour Sensor Pins
+  // Setup colour sensor Pins
   pinMode(COLOUR_SENSOR_S2, OUTPUT);
   pinMode(COLOUR_SENSOR_S3, OUTPUT);
   pinMode(COLOUR_SENSOR_OUT, INPUT);
 
   // Initialize colour sensor handler
   colour_sensor = new ColourSensorHandler(COLOUR_SENSOR_S2, COLOUR_SENSOR_S3, COLOUR_SENSOR_OUT);
+
+  // Setup ultrasonic sensor pins
+  pinMode(ULTRASONIC_SENSOR_TRIGGER, OUTPUT);
+  pinMode(ULTRASONIC_SENSOR_ECHO, INPUT);
+
+  // Initialize ultrasonic sensor handler
+  ultrasonic_sensor = new UltrasonicSensorHandler(ULTRASONIC_SENSOR_TRIGGER, ULTRASONIC_SENSOR_ECHO);
 
 }
 
