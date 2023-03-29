@@ -73,7 +73,7 @@ void loop()
   int dist2 = ultrasonic_sensor->getDuration() * 0.0343 / 2;
 
   // if within 10cm of wall stop moving
-  if(dist1 < 10 || dist2 < 10)
+  if(dist1 < 100 || dist2 < 100)
   {
     digitalWrite(LED_PIN, HIGH);
     drive_handler->stop();

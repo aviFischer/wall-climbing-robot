@@ -11,7 +11,7 @@ class EncoderHandler
   int count_per_revolution;
 
 public:
-  EncoderHandler(int a, int b, double radius, int count_per_revolution) {
+  EncoderHandler(int a, int b) {
     a_state = a;
     b_state = b;
 
@@ -22,7 +22,6 @@ public:
   void toggle_a();
   void toggle_b();
 
-  double distance();
   int getCount();
 };
 

@@ -8,17 +8,22 @@ class AccelerometerHandler
 {
   bfs::Mpu9250 inertialMeasurementUnit = bfs::Mpu9250(&Wire, 0x68);
 
+  int lastReading;
+
 public:
   AccelerometerHandler()
-  {
-    Wire.begin();
-    Wire.setClock(400000);
+  { 
     inertialMeasurementUnit.Begin();
+    lastReading = 0;
   }
 
   bool takeReading();
   
   int getOrientation();
+  int getXZAngle();
+
+  int getLastReading();
+  void bumpLastReading();
 };
 
 #endif
