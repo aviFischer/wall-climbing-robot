@@ -53,16 +53,18 @@ void DriveHandler::stop()
 // Returns angle of robot clockwise from starting position
 float DriveHandler::getRobotAngle()
 {
-  float distance_difference = (leftEncoder->getCount() - rightEncoder->getCount()) * count_to_distance;
-  float angle = robot_width * PI / distance_difference * 360;
+  // Using left + right because the wheel spin is opposite directions
+  float distance_difference = (leftEncoder->getCount() + rightEncoder->getCount()) * count_to_distance;
+  float angle = distance_difference / (robot_width * PI) * 360;
   return angle;
 }
 
 // Starts driving, polls until sufficient distance is travelled
 void DriveHandler::driveUntil(int duty_cycle, int direction, int distance)
 {
+
   // Judging distance purely off left encoder for now
-  int initialDistance = leftEncoder->getCount() * count_to_distance;
+  int initialDistance = rightEncoder->getCount() * count_to_distance;
 
   if(direction = 1) // forward
   {
@@ -81,7 +83,7 @@ void DriveHandler::driveUntil(int duty_cycle, int direction, int distance)
   analogWrite(front_right_motor_pwm, duty_cycle);
   analogWrite(back_right_motor_pwm, duty_cycle);
 
-  while(abs(leftEncoder->getCount() * count_to_distance - initialDistance) < abs(distance))
+  while(abs(rightEncoder->getCount() * count_to_distance - initialDistance) < abs(distance))
   {}
 
   stop();
@@ -108,7 +110,7 @@ void DriveHandler::turnUntil(int duty_cycle, int direction, int angle)
   analogWrite(front_right_motor_pwm, duty_cycle);
   analogWrite(back_right_motor_pwm, duty_cycle);
 
-  while(abs(getRobotAngle() - initialAngle) < angle)
+  while(abs(getRobotAngle() - initialAngle) < abs(angle))
   {}
 
   stop();

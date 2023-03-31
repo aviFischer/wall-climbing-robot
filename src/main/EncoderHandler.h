@@ -3,7 +3,7 @@
 
 class EncoderHandler
 {
-  volatile int counter;
+  volatile long counter;
   volatile int a_state;
   volatile int b_state;
 
@@ -14,6 +14,7 @@ public:
   EncoderHandler(int a, int b) {
     a_state = a;
     b_state = b;
+    counter = 0;
 
     this->radius = radius;
     this->count_per_revolution = count_per_revolution;
